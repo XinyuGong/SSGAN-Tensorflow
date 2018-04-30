@@ -5,6 +5,7 @@ from __future__ import print_function
 
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
+import numpy as np
 
 from ops import conv2d, deconv2d, huber_loss
 from util import log
@@ -103,6 +104,7 @@ class Model(object):
                 g_4 = deconv2d(g_3, deconv_info[3], is_train, name='g_4_deconv', activation_fn=tf.tanh)
                 log.info('{} {}'.format(scope.name, g_4))
                 output = g_4
+                #print(output.get_shape().as_list(), self.image.get_shape().as_list(), output.get_shape().as_list())
                 assert output.get_shape().as_list() == self.image.get_shape().as_list(), output.get_shape().as_list()
             return output
 
@@ -120,7 +122,7 @@ class Model(object):
                 d_3 = slim.dropout(d_3, keep_prob=0.5, is_training=is_train, scope='d_3_conv/')
                 if not reuse: log.info('{} {}'.format(scope.name, d_3))
                 d_4 = slim.fully_connected(
-                    tf.reshape(d_3, [self.batch_size, -1]), n+1, scope='d_4_fc', activation_fn=None)
+                    tf.reshape(d_3, [self.batch_size, -1]), np.asscalar(n+1), scope='d_4_fc', activation_fn=None)
                 if not reuse: log.info('{} {}'.format(scope.name, d_4))
                 output = d_4
                 assert output.get_shape().as_list() == [self.batch_size, n+1]

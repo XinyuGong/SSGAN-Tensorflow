@@ -218,11 +218,12 @@ class Trainer(object):
 
 def main():
     import argparse
+    os.environ["CUDA_VISIBLE_DEVICES"] = '0'
     parser = argparse.ArgumentParser()
     parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--prefix', type=str, default='default')
     parser.add_argument('--checkpoint', type=str, default=None)
-    parser.add_argument('--dataset', type=str, default='CIFAR10', choices=['MNIST', 'SVHN', 'CIFAR10'])
+    parser.add_argument('--dataset', type=str, default='CIFAR10', choices=['MNIST', 'SVHN', 'CIFAR10', 'CRITERIA'])
     parser.add_argument('--learning_rate', type=float, default=1e-4)
     parser.add_argument('--update_rate', type=int, default=5)
     parser.add_argument('--lr_weight_decay', action='store_true', default=False)
@@ -235,6 +236,8 @@ def main():
         import datasets.svhn as dataset
     elif config.dataset == 'CIFAR10':
         import datasets.cifar10 as dataset
+    elif config.dataset == 'CRITERIA':
+        import datasets.criteria as dataset
     else:
         raise ValueError(config.dataset)
 

@@ -166,7 +166,7 @@ def main():
     parser.add_argument('--model', type=str, default='conv', choices=['mlp', 'conv'])
     parser.add_argument('--checkpoint_path', type=str)
     parser.add_argument('--train_dir', type=str)
-    parser.add_argument('--dataset', type=str, default='CIFAR10', choices=['MNIST', 'SVHN', 'CIFAR10'])
+    parser.add_argument('--dataset', type=str, default='CIFAR10', choices=['MNIST', 'SVHN', 'CIFAR10', 'CRITERIA'])
     parser.add_argument('--data_id', nargs='*', default=None)
     config = parser.parse_args()
 
@@ -176,6 +176,8 @@ def main():
         import datasets.svhn as dataset
     elif config.dataset == 'CIFAR10':
         import datasets.cifar10 as dataset
+    elif config.dataset == 'CRITERIA':
+        import datasets.criteria as dataset
     else:
         raise ValueError(config.dataset)
 
